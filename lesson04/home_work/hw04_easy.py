@@ -6,9 +6,15 @@
 # квадратами элементов исходного списка
 # [1, 2, 4, 0] --> [1, 4, 16, 0]
 
+my_list = [1, 2, 4, 0]
+square_of_my_list = [x**2 for x in my_list]
+
 # Задание-2:
 # Даны два списка фруктов.
 # Получить список фруктов, присутствующих в обоих исходных списках.
+
+list_one, list_two = ['ф1', 'ф2', 'ф3', 'ф3'], ['ф3', 'ф4', 'ф5', 'ф6']
+print(list(set([fruit for fruit in list_one if fruit in list_two])))
 
 # Задание-3:
 # Дан список, заполненный произвольными числами.
@@ -16,3 +22,9 @@
 # + Элемент кратен 3
 # + Элемент положительный
 # + Элемент не кратен 4
+import random
+my_list_digit = [random.randint(-100, 100) for x in range(15)]
+print(my_list_digit)
+new_list_digit = [x for x in my_list_digit if (x % 3 == 0 and x > 0 and x % 4 != 0)]
+# если не одновременно, то or в условии
+print(new_list_digit)

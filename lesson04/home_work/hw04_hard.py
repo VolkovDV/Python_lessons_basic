@@ -4,7 +4,8 @@
 matrix = [[1, 0, 8],
           [3, 4, 1],
           [0, 4, 2]]
-          
+[list(a) for a in zip([1,2,3], [4,5,6], [7,8,9])]
+matrix_rotate = [list(m) for m in (zip(matrix[0], matrix[1], matrix[2]))]
 # Выполнить поворот (транспонирование) матрицы
 # Пример. Результат:
 # matrix_rotate = [[1, 3, 0],
