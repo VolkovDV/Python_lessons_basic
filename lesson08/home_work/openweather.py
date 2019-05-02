@@ -154,7 +154,9 @@ weather = [(city_weather["id"], city_weather["name"], city_weather["dt"],
             city_weather["main"]["temp"], city_weather["weather"][0]["id"])]
 connect = sqlite3.connect("cities.db")
 c = connect.cursor()
-c.execute(f"""CREATE TABLE IF NOT EXISTS {city_weather["name"]} (id_города INTEGER PRIMARY KEY, Город VARCHAR(255), Дата DATE, Температура INTEGER, id_погоды INTEGER)""")
+c.execute(f"""CREATE TABLE IF 
+NOT EXISTS {city_weather["name"]} (id_города INTEGER PRIMARY KEY, Город VARCHAR(255), 
+Дата DATE, Температура INTEGER, id_погоды INTEGER)""")
 c.executemany("INSERT OR REPLACE INTO {} VALUES (?, ?, ?, ?, ?)".format(city_weather["name"]), weather)
 connect.commit()
 c.close()
