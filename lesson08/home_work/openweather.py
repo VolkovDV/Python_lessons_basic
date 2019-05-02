@@ -122,4 +122,40 @@ OpenWeatherMap — онлайн-сервис, который предостав�
         ...
 
 """
+import json
+import sqlite3
+from urllib.request import urlopen
+with open('city.list.json', 'r', encoding='UTF-8') as f:
+    cities = json.load(f)
 
+with open('app.id', encoding='UTF-8') as f_app_id:
+    _ = f_app_id.readline()
+    app_id = f_app_id.readline()
+
+city_name = input('Название города: ')
+search_result = []
+for city in cities:
+    if city['name'].find(city_name) >= 0:
+        search_result.append(city)
+if len(search_result) > 1:
+    for i, city in enumerate(search_result):
+        print(f'''{i + 1} {city['name']} - {city['country']}, id = {city['id']}''')
+    city = search_result[int(input('Номер результата: ')) - 1]
+elif len(search_result) == 1:
+    city = search_result[0]
+else:
+    print('Empty')
+    exit()
+
+req = 'http://api.openweathermap.org/data/2.5/weather?id={}&appid={}'.format(city['id'], app_id)
+city_weather = json.load(urlopen(req))
+print(f'''{city_weather['name']}: {city_weather['main']['temp']}''')
+weather = [(city_weather["id"], city_weather["name"], city_weather["dt"],
+            city_weather["main"]["temp"], city_weather["weather"][0]["id"])]
+connect = sqlite3.connect("cities.db")
+c = connect.cursor()
+c.execute(f"""CREATE TABLE IF NOT EXISTS {city_weather["name"]} (id_города INTEGER PRIMARY KEY, Город VARCHAR(255), Дата DATE, Температура INTEGER, id_погоды INTEGER)""")
+c.executemany("INSERT OR REPLACE INTO {} VALUES (?, ?, ?, ?, ?)".format(city_weather["name"]), weather)
+connect.commit()
+c.close()
+connect.close()
